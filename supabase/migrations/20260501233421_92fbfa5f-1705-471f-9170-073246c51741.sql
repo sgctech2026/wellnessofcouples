@@ -1,0 +1,1 @@
+insert into storage.buckets (id, name, public) values ('certs', 'certs', true) on conflict (id) do nothing;
