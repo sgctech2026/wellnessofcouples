@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ChevronRight } from "lucide-react";
-import lightLabsLogo from "@/assets/lightlabs-logo.png.asset.json";
+import lightLabsLogo from "@/assets/lightlabs-logo.png";
 
 import {
   Dialog,
@@ -60,7 +60,7 @@ export function LabTestedBadge({ variant }: { variant: ProductVariant }) {
         <span className="lab-badge-main" aria-hidden>
           <span className="lab-badge-check">
             <img
-              src={lightLabsLogo.url}
+              src={lightLabsLogo}
               alt=""
               width={18}
               height={18}
@@ -97,7 +97,7 @@ export function LabTestedBadge({ variant }: { variant: ProductVariant }) {
                 <div className="lab-modal-brand">
                   <span className="lab-badge-check" aria-hidden>
                     <img
-                      src={lightLabsLogo.url}
+                      src={lightLabsLogo}
                       alt=""
                       width={16}
                       height={16}
