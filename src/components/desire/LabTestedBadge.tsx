@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, CheckCircle2 } from "lucide-react";
 import lightLabsLogo from "@/assets/lightlabs-logo.png";
+import labSignature from "@/assets/lab-signature.png";
 
 import {
   Dialog,
@@ -18,9 +19,13 @@ import {
 
 type ProductVariant = "him" | "her" | "couple";
 type Formula = "him" | "her";
+type Tab = "actives" | "heavy-metals" | "microbials";
 
 type Ingredient = { name: string; claim: string };
+type MetalRow = { name: string; value: string };
+type MicrobialRow = { name: string; value: string };
 
+// ─── ACTIVES: variant-specific (Men vs Women differ) ────────────────
 const INGREDIENTS: Record<Formula, Ingredient[]> = {
   him: [
     { name: "Tongkat Ali Extract", claim: "250 mg/serving" },
@@ -40,14 +45,43 @@ const INGREDIENTS: Record<Formula, Ingredient[]> = {
   ],
 };
 
+// ─── HEAVY METALS: shared across both variants ──────────────────────
+const HEAVY_METALS: MetalRow[] = [
+  { name: "Arsenic", value: "< 0.5 micrograms" },
+  { name: "Cadmium", value: "< 0.5 micrograms" },
+  { name: "Lead", value: "< 0.5 micrograms" },
+  { name: "Mercury", value: "< 0.5 micrograms" },
+];
+
+// ─── MICROBIALS: shared across both variants ────────────────────────
+const MICROBIALS: MicrobialRow[] = [
+  { name: "Total Plate Count", value: "Not detected" },
+  { name: "E. Coli", value: "Not detected" },
+  { name: "Salmonella", value: "Not detected" },
+  { name: "Staphylococcus Aureus", value: "Not detected" },
+  { name: "Total Mold", value: "Not detected" },
+];
+
+const TABS: { id: Tab; label: string }[] = [
+  { id: "actives", label: "Actives" },
+  { id: "heavy-metals", label: "Heavy Metals" },
+  { id: "microbials", label: "Microbials" },
+];
+
+const LAST_TESTED: Record<Tab, string> = {
+  actives: "MARCH 09, 2026",
+  "heavy-metals": "NOVEMBER 19, 2025",
+  microbials: "FEBRUARY 06, 2026",
+};
 
 export function LabTestedBadge({ variant }: { variant: ProductVariant }) {
   const [open, setOpen] = useState(false);
   const [formula, setFormula] = useState<Formula>(
     variant === "her" ? "her" : "him",
   );
+  const [tab, setTab] = useState<Tab>("actives");
 
-  const rows = INGREDIENTS[formula];
+  const activeRows = INGREDIENTS[formula];
 
   return (
     <>
@@ -86,6 +120,7 @@ export function LabTestedBadge({ variant }: { variant: ProductVariant }) {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="lab-modal">
           <div className="lab-modal-inner">
+            {/* Header */}
             <div className="lab-modal-header">
               <a
                 href="https://www.lightlabs.com/"
@@ -110,12 +145,14 @@ export function LabTestedBadge({ variant }: { variant: ProductVariant }) {
               </a>
             </div>
 
+            {/* Title */}
             <DialogTitle className="lab-modal-title">Desire</DialogTitle>
             <DialogDescription className="lab-modal-sub">
               Desire partners with Light Labs, an independent testing lab, to
               verify the purity, potency, and safety of every batch.
             </DialogDescription>
 
+            {/* Variant dropdown */}
             <Select value={formula} onValueChange={(v) => setFormula(v as Formula)}>
               <SelectTrigger className="lab-modal-select">
                 <SelectValue />
@@ -126,23 +163,101 @@ export function LabTestedBadge({ variant }: { variant: ProductVariant }) {
               </SelectContent>
             </Select>
 
-            <div className="lab-modal-table">
-              <div className="lab-modal-thead">
-                <span>ACTIVE</span>
-                <span>STATUS</span>
-                <span>LABEL CLAIM</span>
-              </div>
-              {rows.map((r) => (
-                <div key={r.name} className="lab-modal-row">
-                  <span className="lab-modal-active">{r.name}</span>
-                  <span className="lab-modal-status">WITHIN LABEL SPECS</span>
-                  <span className="lab-modal-claim">{r.claim}</span>
-                </div>
+            {/* Tab pills */}
+            <div className="lab-tabs" role="tablist" aria-label="Test categories">
+              {TABS.map((t) => (
+                <button
+                  key={t.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={tab === t.id}
+                  className={`lab-tab${tab === t.id ? " is-active" : ""}`}
+                  onClick={() => setTab(t.id)}
+                >
+                  {t.label}
+                </button>
               ))}
             </div>
 
-            <div className="lab-modal-foot">LAST TESTED MARCH 09, 2026</div>
+            {/* Panel */}
+            <div className="lab-panel">
+              {tab === "actives" && (
+                <>
+                  <div className="lab-modal-table">
+                    <div className="lab-modal-thead">
+                      <span>ACTIVE</span>
+                      <span>STATUS</span>
+                      <span>LABEL CLAIM</span>
+                    </div>
+                    {activeRows.map((r) => (
+                      <div key={r.name} className="lab-modal-row">
+                        <span className="lab-modal-active">{r.name}</span>
+                        <span className="lab-modal-status">WITHIN LABEL SPECS</span>
+                        <span className="lab-modal-claim">{r.claim}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="lab-modal-foot">
+                    LAST TESTED {LAST_TESTED.actives}
+                  </div>
+                </>
+              )}
 
+              {tab === "heavy-metals" && (
+                <>
+                  <p className="lab-panel-intro">
+                    Elements like lead and mercury occur in nature. We monitor
+                    levels closely to help promote product quality and
+                    transparency.
+                  </p>
+                  <div className="lab-check-list">
+                    {HEAVY_METALS.map((r) => (
+                      <div key={r.name} className="lab-check-row">
+                        <span className="lab-check-name">
+                          <CheckCircle2 size={18} className="lab-check-icon" />
+                          {r.name}
+                        </span>
+                        <span className="lab-check-value">{r.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="lab-panel-note">
+                    Tested against Desire's safety &amp; quality standards
+                  </p>
+                  <div className="lab-modal-foot">
+                    LAST TESTED {LAST_TESTED["heavy-metals"]}
+                  </div>
+                </>
+              )}
+
+              {tab === "microbials" && (
+                <>
+                  <p className="lab-panel-intro">
+                    Microorganisms like bacteria, mold, or yeast that spoil
+                    products, reduce freshness, and cause infection or food
+                    poisoning.
+                  </p>
+                  <div className="lab-check-list">
+                    {MICROBIALS.map((r) => (
+                      <div key={r.name} className="lab-check-row">
+                        <span className="lab-check-name">
+                          <CheckCircle2 size={18} className="lab-check-icon" />
+                          {r.name}
+                        </span>
+                        <span className="lab-check-value lab-check-value--muted">
+                          {r.value}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="lab-modal-foot">
+                    LAST TESTED {LAST_TESTED.microbials}
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* Approval box */}
             <div className="lab-modal-approval">
               <div className="lab-modal-approval-header">
                 <span>Results approved by</span>
@@ -155,23 +270,12 @@ export function LabTestedBadge({ variant }: { variant: ProductVariant }) {
                   </span>
                 </span>
               </div>
-              <svg
-                viewBox="0 0 240 36"
+              <img
+                src={labSignature}
+                alt=""
                 className="lab-modal-signature"
                 aria-hidden
-              >
-                <g transform="translate(-10, -12) scale(1.08, 0.68)">
-                  <path
-                    d="M4,36 C12,16 28,12 24,34 C22,46 16,44 30,36 C44,28 64,20 82,18 C100,16 108,24 102,36 C96,48 78,50 68,44 C60,40 64,32 76,30 C88,28 104,34 116,40 C128,46 142,48 154,42 C166,36 174,24 176,14 M168,16 C164,28 166,42 178,46 C190,50 204,44 214,34 C224,24 226,12 222,6"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.6"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    vectorEffect="non-scaling-stroke"
-                  />
-                </g>
-              </svg>
+              />
               <div className="lab-modal-approval-name">
                 LEV SPIVAK-BIRNDORF, LAB DIRECTOR
               </div>

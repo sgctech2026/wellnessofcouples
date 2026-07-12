@@ -9876,16 +9876,20 @@
 
 .lab-modal {
   max-width: 520px;
-  padding: 24px 24px 20px;
+  padding: 0;
   border-radius: 18px;
   background: #fff;
+  overflow: hidden;
 }
 
 .lab-modal-inner {
   display: flex;
   flex-direction: column;
-  max-height: 76vh;
+  max-height: 80vh;
   overflow-y: auto;
+  /* Content padding lives here; the scrollbar hugs the modal's right edge.
+     Extra right padding keeps text off the scrollbar. */
+  padding: 24px 14px 20px 24px;
 }
 .lab-modal-header {
   display: flex; align-items: center; justify-content: center;
@@ -10022,11 +10026,13 @@
   letter-spacing: 0.02em;
 }
 .lab-modal-signature {
-  width: 100%;
-  max-width: 220px;
-  height: 34px;
-  color: #1a1a1e;
-  margin: 4px 0 8px;
+  width: auto;
+  max-width: 180px;
+  height: 44px;
+  object-fit: contain;
+  object-position: left center;
+  display: block;
+  margin: 6px 0 10px;
 }
 .lab-modal-approval-name {
   font-size: 12px;
@@ -10043,9 +10049,103 @@
   text-align: left;
 }
 
+/* ─── Tab pills ─────────────────────────────────────────────── */
+.lab-tabs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.lab-tab {
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  padding: 9px 18px;
+  border-radius: 999px;
+  background: #f1f1f3;
+  color: #4a4a4f;
+  font-family: var(--font-display, "Montserrat", sans-serif);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  transition: background 0.18s ease, color 0.18s ease;
+  white-space: nowrap;
+}
+.lab-tab:hover { background: #e7e7ea; }
+.lab-tab.is-active {
+  background: #dfe4ff;
+  color: #3348d1;
+}
+.lab-tab:focus-visible {
+  outline: 2px solid #5570ff;
+  outline-offset: 2px;
+}
+
+/* ─── Panel wrapper ─────────────────────────────────────────── */
+.lab-panel { display: flex; flex-direction: column; }
+.lab-panel-intro {
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #4a4a4f;
+  margin: 2px 0 18px;
+  padding: 0 6px;
+}
+.lab-panel-note {
+  margin-top: 12px;
+  font-size: 12px;
+  color: #8a8a90;
+}
+
+/* ─── Check list (Heavy Metals / Microbials) ────────────────── */
+.lab-check-list {
+  border: 1px solid #ececef;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.lab-check-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+}
+.lab-check-row + .lab-check-row { border-top: 1px solid #f1f1f3; }
+.lab-check-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0b0b0c;
+}
+.lab-check-icon { color: #16a34a; flex: 0 0 auto; }
+.lab-check-value {
+  text-align: right;
+  font-size: 13px;
+  color: #2a2a2e;
+  border-bottom: 1px solid #d6d6db;
+  padding-bottom: 1px;
+  white-space: nowrap;
+}
+.lab-check-value--muted { color: #6b6b72; border-bottom: none; }
+
 @media (max-width: 480px) {
-  .lab-modal-thead, .lab-modal-row { grid-template-columns: 1.2fr 0.9fr 0.9fr; padding: 10px; }
-  .lab-modal-active { font-size: 13px; }
+  .lab-modal { padding: 20px 16px 16px; }
+  .lab-modal-title { font-size: 22px; }
+  .lab-modal-sub { font-size: 13px; padding: 0 4px; }
+  .lab-modal-thead, .lab-modal-row { grid-template-columns: 1.2fr 0.9fr 0.9fr; padding: 10px; gap: 8px; }
+  .lab-modal-active { font-size: 12.5px; }
+  .lab-modal-claim { font-size: 12px; }
+  .lab-modal-status { font-size: 9px; padding: 3px 6px; }
   .lab-modal-approval { padding: 14px; }
   .lab-modal-signature { max-width: 170px; }
+  .lab-tabs { gap: 6px; }
+  .lab-tab { padding: 8px 13px; font-size: 12px; }
+  .lab-panel-intro { font-size: 13px; }
+  .lab-check-row { padding: 12px 13px; }
+  .lab-check-name { font-size: 13px; gap: 8px; }
+  .lab-check-value { font-size: 12px; }
 }
