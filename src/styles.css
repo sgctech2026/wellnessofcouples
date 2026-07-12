@@ -10133,7 +10133,10 @@
 .lab-check-value--muted { color: #6b6b72; border-bottom: none; }
 
 @media (max-width: 480px) {
-  .lab-modal { padding: 20px 16px 16px; }
+  /* Pull the whole dialog up and cap its height so it never hides behind
+     the sticky checkout bar at the bottom of the screen. */
+  .lab-modal { top: 5vh !important; padding: 0; }
+  .lab-modal-inner { max-height: 78vh; max-height: 78dvh; padding: 20px 12px 16px 16px; }
   .lab-modal-title { font-size: 22px; }
   .lab-modal-sub { font-size: 13px; padding: 0 4px; }
   .lab-modal-thead, .lab-modal-row { grid-template-columns: 1.2fr 0.9fr 0.9fr; padding: 10px; gap: 8px; }
