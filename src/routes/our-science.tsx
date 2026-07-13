@@ -1,7 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { ProductNav } from "@/components/desire/ProductNav";
 import { PdpMarquee } from "@/components/desire/PdpMarquee";
 import { Footer } from "@/components/desire/Footer";
+
+const isPdf = (url: string) => /\.pdf(?:\?|$)/i.test(url);
 const labImage = "https://desirephilippines.b-cdn.net/Our%20Science/Doctor.webp";
 
 export const Route = createFileRoute("/our-science")({
@@ -101,6 +104,23 @@ const trustBadges = [
 ];
 
 function OurSciencePage() {
+  const [viewDoc, setViewDoc] = useState<{ name: string; url: string } | null>(null);
+
+  // Lock body scroll + close on Escape while the lightbox is open
+  useEffect(() => {
+    if (!viewDoc) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setViewDoc(null);
+    };
+    document.addEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [viewDoc]);
+
   return (
     <div className="our-science-page">
       <PdpMarquee />
@@ -196,12 +216,26 @@ function OurSciencePage() {
                       <div className="cert-card-name">{doc.name}</div>
                       <div className="cert-card-meta">{doc.meta}</div>
                     </div>
-                    <a
-                      className="cert-card-btn"
-                      href={`/api/download?url=${encodeURIComponent(doc.url)}&filename=${encodeURIComponent(doc.name + (doc.url.match(/\.[a-zA-Z0-9]+(?:\?|$)/)?.[0]?.replace(/\?.*/, "") || ""))}`}
-                    >
-                      Download
-                    </a>
+                    {isPdf(doc.url) ? (
+                      <a
+                        className="cert-card-btn"
+                        href={doc.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`View ${doc.name} (opens in a new tab)`}
+                      >
+                        View
+                      </a>
+                    ) : (
+                      <button
+                        type="button"
+                        className="cert-card-btn"
+                        onClick={() => setViewDoc({ name: doc.name, url: doc.url })}
+                        aria-label={`View ${doc.name}`}
+                      >
+                        View
+                      </button>
+                    )}
                   </div>
                 ))}
               </div>
@@ -260,6 +294,34 @@ function OurSciencePage() {
       </section>
 
       <Footer />
+
+      {/* Image lightbox */}
+      {viewDoc && (
+        <div
+          className="cert-lightbox"
+          role="dialog"
+          aria-modal="true"
+          aria-label={viewDoc.name}
+          onClick={() => setViewDoc(null)}
+        >
+          <div className="cert-lightbox-panel" onClick={(e) => e.stopPropagation()}>
+            <div className="cert-lightbox-head">
+              <span className="cert-lightbox-title">{viewDoc.name}</span>
+              <button
+                type="button"
+                className="cert-lightbox-close"
+                onClick={() => setViewDoc(null)}
+                aria-label="Close"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="cert-lightbox-body">
+              <img src={viewDoc.url} alt={viewDoc.name} loading="eager" />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
