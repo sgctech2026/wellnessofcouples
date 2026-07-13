@@ -6741,7 +6741,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  padding: 16px;
   background: rgba(8, 4, 4, 0.82);
   backdrop-filter: blur(4px);
   animation: cert-lb-fade 0.2s ease;
@@ -6750,8 +6750,9 @@
 .cert-lightbox-panel {
   display: flex;
   flex-direction: column;
-  width: min(720px, 100%);
-  max-height: 90vh;
+  width: auto;
+  max-width: min(760px, 100%);
+  max-height: 96vh;
   background: #fff;
   border-radius: 16px;
   overflow: hidden;
@@ -6795,16 +6796,22 @@
 }
 .cert-lightbox-close:hover { background: #e6e6ea; color: #0b0b0c; }
 .cert-lightbox-body {
+  min-height: 0;
   overflow: auto;
-  padding: 16px;
+  padding: 12px;
   background: #f6f6f8;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .cert-lightbox-body img {
+  /* Fit the full image within the viewport: cap height to the space left
+     after the header (~62px) and page/body padding, so nothing is cut off. */
   max-width: 100%;
+  max-height: calc(96vh - 62px - 24px);
+  width: auto;
   height: auto;
+  object-fit: contain;
   display: block;
   border-radius: 8px;
 }
