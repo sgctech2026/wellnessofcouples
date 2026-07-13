@@ -3690,6 +3690,9 @@
   .pdp-gallery { margin-top: 0; position: static; bottom: auto; top: auto; align-self: stretch; justify-self: stretch; width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box; display: block; }
   /* Mobile: stack back to main image on top, thumbnails below (row) */
   .pdp-gallery-main { flex-direction: column; gap: 0.75rem; }
+  /* Mobile: main image on top, thumbnail row below it */
+  .pdp-gallery-main .pdp-main-image { order: 1; }
+  .pdp-gallery-main .pdp-thumbs { order: 2; }
   /* Badge + CTA span full width again since there's no side rail on mobile */
   .pdp-gallery > .lab-badge { width: 100%; margin-left: 0; }
   .pdp-gallery > .pdp-gallery-cta { width: 100%; margin-left: 0; }
