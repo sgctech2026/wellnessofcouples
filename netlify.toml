@@ -7,6 +7,13 @@
   NPM_FLAGS = "--legacy-peer-deps"
   NETLIFY = "true"
 
+# Force-download proxy for certificate files (Our Science page).
+# Must come BEFORE the SPA catch-all so /api/download hits the function.
+[[redirects]]
+  from = "/api/download"
+  to = "/.netlify/functions/download"
+  status = 200
+
 [[redirects]]
   from = "/*"
   to = "/index.html"

@@ -814,42 +814,43 @@ export function ProductDesireMen({ initialVariant = "him" }: { initialVariant?: 
           <div className="pdp-hero-grid">
             {/* Gallery */}
             <div className="pdp-gallery">
-              <div className="pdp-main-image" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
-                <div className="pdp-main-image-inner" aria-label={`Product image ${currentImg + 1}`}>
-                  <img
-                    src={PRODUCT_IMAGES[currentImg].src}
-                    alt={PRODUCT_IMAGES[currentImg].label}
-                    className="pdp-main-img desire-img-loaded"
-                    decoding="sync"
-                    loading="eager"
-                    fetchPriority="high"
-                    width={600}
-                    height={600}
-                  />
+              <div className="pdp-gallery-main">
+                <div className="pdp-thumbs">
+                  {PRODUCT_IMAGES.map((img, idx) => (
+                    <button
+                      key={idx}
+                      className={`pdp-thumb${idx === currentImg ? " active" : ""}`}
+                      onClick={() => setCurrentImg(idx)}
+                      aria-label={`View ${img.label}`}
+                      aria-current={idx === currentImg}
+                    >
+                      <img
+                        src={img.src}
+                        alt={img.label}
+                        className="pdp-thumb-img desire-img-loaded"
+                        decoding={idx < 2 ? "sync" : "async"}
+                        loading={idx < 2 ? "eager" : "lazy"}
+                        fetchPriority={idx < 2 ? "high" : undefined}
+                        width={120}
+                        height={120}
+                      />
+                    </button>
+                  ))}
                 </div>
-                <button className="pdp-arrow pdp-arrow-prev" onClick={prev} aria-label="Previous image">‹</button>
-                <button className="pdp-arrow pdp-arrow-next" onClick={next} aria-label="Next image">›</button>
-              </div>
-              <div className="pdp-thumbs">
-                {PRODUCT_IMAGES.map((img, idx) => idx === currentImg ? null : (
-                  <button
-                    key={idx}
-                    className="pdp-thumb"
-                    onClick={() => setCurrentImg(idx)}
-                    aria-label={`View ${img.label}`}
-                  >
+                <div className="pdp-main-image" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
+                  <div className="pdp-main-image-inner" aria-label={`Product image ${currentImg + 1}`}>
                     <img
-                      src={img.src}
-                      alt={img.label}
-                      className="pdp-thumb-img desire-img-loaded"
-                      decoding={idx < 2 ? "sync" : "async"}
-                      loading={idx < 2 ? "eager" : "lazy"}
-                      fetchPriority={idx < 2 ? "high" : undefined}
-                      width={120}
-                      height={120}
+                      src={PRODUCT_IMAGES[currentImg].src}
+                      alt={PRODUCT_IMAGES[currentImg].label}
+                      className="pdp-main-img desire-img-loaded"
+                      decoding="sync"
+                      loading="eager"
+                      fetchPriority="high"
+                      width={600}
+                      height={600}
                     />
-                  </button>
-                ))}
+                  </div>
+                  </div>
               </div>
               {/* Hidden preloader: keeps every variant's images warm in the browser cache */}
               <div aria-hidden className="pdp-preloader">
@@ -858,6 +859,9 @@ export function ProductDesireMen({ initialVariant = "him" }: { initialVariant?: 
                 ))}
               </div>
               <LabTestedBadge variant={variant} />
+              <Link to="/our-science" preload="intent" className="pdp-certs-cta pdp-gallery-cta">
+                VIEW THIRD PARTY RESULTS
+              </Link>
             </div>
 
             {/* Info */}

@@ -2542,20 +2542,73 @@
 .pdp-gallery {
   display: flex;
   flex-direction: column;
-  margin-top: -3.5rem;
+  margin-top: -4.5rem;
   position: sticky;
-  bottom: 1rem;
-  top: auto;
-  align-self: end;
+  top: 110px;
+  bottom: auto;
+  align-self: start;
   scrollbar-width: none;
 }
 .pdp-gallery::-webkit-scrollbar { display: none; }
+/* Gruns-style: thumbnail rail on the left, main image on the right */
+.pdp-gallery-main {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: stretch;
+}
+/* Align the Light Labs badge to the main image width (offset past the
+   thumbnail rail: 100px rail + 1rem gap). */
+.pdp-gallery > .lab-badge {
+  width: calc(100% - 100px - 1rem);
+  margin-left: calc(100px + 1rem);
+}
+/* "View third party results" button under the badge, aligned to main image */
+.pdp-gallery > .pdp-gallery-cta {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  box-sizing: border-box;
+  width: calc(100% - 100px - 1rem);
+  margin-left: calc(100px + 1rem);
+  margin-top: 0.6rem;
+  /* Smaller than the standalone certs CTA lower on the page */
+  padding: 0.75rem 2rem;
+  font-size: 0.82rem;
+  position: relative;
+  overflow: hidden;
+}
+/* Sweeping shine across the button */
+.pdp-gallery > .pdp-gallery-cta::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.55) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-20deg);
+  animation: pdp-cta-shine 3s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes pdp-cta-shine {
+  0% { left: -75%; }
+  55%, 100% { left: 130%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pdp-gallery > .pdp-gallery-cta::after { animation: none; opacity: 0; }
+}
 .pdp-main-image {
-  width: 100%;
+  flex: 1;
+  min-width: 0;
   aspect-ratio: 1;
   border-radius: 20px;
   overflow: hidden;
-  margin-bottom: 1rem;
   position: relative;
   background:
     radial-gradient(circle at 50% 50%, rgba(80, 10, 10, 0.5), transparent 60%),
@@ -2600,17 +2653,27 @@
 .pdp-arrow-prev { left: 1rem; }
 .pdp-arrow-next { right: 1rem; }
 
-.pdp-thumbs { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.pdp-thumbs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 0 0 100px;
+  width: 100px;
+  align-self: start;
+}
 .pdp-preloader { position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none; }
 .pdp-preloader img { width: 1px; height: 1px; }
 .pdp-thumb {
   position: relative;
   aspect-ratio: 1;
-  border-radius: 16px;
+  width: 100%;
+  border-radius: 12px;
   border: 2px solid transparent;
   overflow: hidden;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: opacity 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  /* Gruns-style: unselected thumbnails are faded */
+  opacity: 0.5;
   background:
     radial-gradient(circle at 50% 50%, rgba(80, 10, 10, 0.5), transparent 60%),
     linear-gradient(135deg, #4a0808 0%, #2a0404 50%, #0d0202 100%);
@@ -2624,13 +2687,12 @@
   padding: 0;
 }
 .pdp-thumb:hover {
-  transform: translateY(-3px);
-  border-color: var(--red);
-  box-shadow: 0 15px 30px rgba(219, 38, 38, 0.25);
+  opacity: 0.85;
 }
 .pdp-thumb.active {
+  opacity: 1;
   border-color: var(--red);
-  box-shadow: 0 15px 30px rgba(219, 38, 38, 0.3);
+  box-shadow: 0 8px 20px rgba(219, 38, 38, 0.25);
 }
 .pdp-thumb-label { position: relative; z-index: 2; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
 .pdp-thumb.video::after {
@@ -3626,11 +3688,16 @@
   /* Mobile product gallery: keep the whole section inside the phone viewport */
   .pdp-hero-grid { grid-template-columns: minmax(0, 1fr) !important; width: 100%; max-width: 100%; min-width: 0; overflow: hidden; box-sizing: border-box; gap: 1rem; }
   .pdp-gallery { margin-top: 0; position: static; bottom: auto; top: auto; align-self: stretch; justify-self: stretch; width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box; display: block; }
-  .pdp-main-image { width: 100%; max-width: 100%; aspect-ratio: 1 / 1; box-sizing: border-box; border-radius: 14px; overflow: hidden; }
+  /* Mobile: stack back to main image on top, thumbnails below (row) */
+  .pdp-gallery-main { flex-direction: column; gap: 0.75rem; }
+  /* Badge + CTA span full width again since there's no side rail on mobile */
+  .pdp-gallery > .lab-badge { width: 100%; margin-left: 0; }
+  .pdp-gallery > .pdp-gallery-cta { width: 100%; margin-left: 0; }
+  .pdp-main-image { width: 100%; max-width: 100%; flex: none; aspect-ratio: 1 / 1; box-sizing: border-box; border-radius: 14px; overflow: hidden; }
   .pdp-main-image-inner { position: absolute; inset: 0; }
   .pdp-main-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover !important; padding: 0 !important; box-sizing: border-box; }
   .pdp-thumb-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover !important; padding: 0 !important; box-sizing: border-box; }
-  .pdp-thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box; margin-top: 0.75rem; }
+  .pdp-thumbs { display: grid; grid-template-columns: repeat(5, 1fr); flex: none; gap: 0.5rem; width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box; margin-top: 0 !important; }
   .pdp-thumb { width: 100%; max-width: 100%; min-width: 0; aspect-ratio: 1 / 1; box-sizing: border-box; border-radius: 10px; }
   .pdp-info { margin-top: 1.5rem; }
   .pdp-title { font-size: 1.7rem; }
@@ -9783,13 +9850,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
   width: 100%;
   margin-top: 14px;
-  padding: 14px 16px;
+  padding: 10px 14px;
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: 12px;
   box-shadow: 0 1px 2px rgba(0,0,0,0.04), inset 0 0 0 1px rgba(255,255,255,0.6);
   cursor: pointer;
   text-align: left;
@@ -9816,9 +9883,9 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  flex: 0 0 32px;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
   border-radius: 8px;
   background: var(--lab-blue-soft);
   color: var(--lab-blue);
@@ -9829,9 +9896,9 @@
   object-fit: contain;
   display: block;
 }
-.lab-badge-text { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0; }
+.lab-badge-text { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
 .lab-badge-line1 {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   color: var(--foreground);
   display: inline-flex; align-items: center; flex-wrap: wrap; gap: 6px;
@@ -9850,16 +9917,16 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: 13px;
+  font-size: 12px;
   color: var(--muted-foreground);
 }
 .lab-badge-arrow {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  flex: 0 0 32px;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
   border-radius: 9999px;
   background: var(--lab-blue-soft);
   color: var(--lab-blue);

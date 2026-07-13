@@ -64,23 +64,13 @@ const testItems = [
 
 const certGroups = [
   {
-    id: 1,
-    title: "NSF International Certification",
-    description: null as string | null,
-    docs: [
-      { name: "NSF International Dietary Supplement Mood Enhancer", meta: "PNG · Verified report", url: "https://desirephilippines.b-cdn.net/HomePage/NSF%20Dietary%20Supplement.png" },
-      { name: "NSF International Sport Desire Mood Enhancer", meta: "PNG · Verified report", url: "https://desirephilippines.b-cdn.net/HomePage/NSF%20Sport.png" },
-    ],
-  },
-  {
     id: 2,
     title: "Batch Testing Form Dosage",
     description:
-      "Designed to support your long-term health and vitality, Daily Ultimate Longevity is crafted with carefully selected ingredients that are clinically studied for their effectiveness. To ensure this premium product meets our high standards, every batch undergoes thorough third-party testing.",
+      "Designed to support your long-term health and vitality, Daily Ultimate Longevity is crafted with carefully selected ingredients that are clinically studied for their effectiveness. To ensure this premium product meets our high standards, every batch undergoes thorough third-party testing." as string | null,
     docs: [
-      { name: "Desire Mood Enhancer Vitaquest", meta: "PDF · Batch test report", url: "https://desirephilippines.b-cdn.net/HomePage/Vitaquest.pdf" },
-      { name: "Desire Mood Enhancer NSF Report", meta: "PDF · Batch test report", url: "https://desirephilippines.b-cdn.net/HomePage/NSF%20Report.pdf" },
-      { name: "Desire Mood Enhancer Eurofins", meta: "PDF · Batch test report", url: "https://desirephilippines.b-cdn.net/HomePage/Eurofins.pdf" },
+      { name: "Desire Mood Enhancer Vitaquest", meta: "PDF · Batch test report", url: "https://desirephilippines.b-cdn.net/Our%20Science/Vitaquest.pdf" },
+      { name: "Desire Mood Enhancer Eurofins", meta: "PDF · Batch test report", url: "https://desirephilippines.b-cdn.net/Our%20Science/Eurofins.pdf" },
     ],
   },
   {
@@ -88,8 +78,8 @@ const certGroups = [
     title: "Daily Ultimate Longevity Certification",
     description: null,
     docs: [
-      { name: "JW International, Desire Female Enhancer", meta: "PNG · Verified report", url: "https://desirephilippines.b-cdn.net/HomePage/JW%20Woman.png" },
-      { name: "JW International, Desire Male Enhancer", meta: "PNG · Verified report", url: "https://desirephilippines.b-cdn.net/HomePage/JW%20Man.png" },
+      { name: "JW International, Desire Female Enhancer", meta: "PNG · Verified report", url: "https://desirephilippines.b-cdn.net/Our%20Science/JW%20Woman.png" },
+      { name: "JW International, Desire Male Enhancer", meta: "PNG · Verified report", url: "https://desirephilippines.b-cdn.net/Our%20Science/JW%20Man.png" },
     ],
   },
   {
@@ -97,8 +87,8 @@ const certGroups = [
     title: "FDA Certification",
     description: null,
     docs: [
-      { name: "Desire Mood Enhancer FDA_LTO", meta: "JPG · FDA License to Operate", url: "https://desirephilippines.b-cdn.net/HomePage/FDA%20LTO.jpg" },
-      { name: "Desire Mood Enhancer FDA_CPR", meta: "JPG · FDA Certificate of Product Registration", url: "https://desirephilippines.b-cdn.net/HomePage/FDA%20CPR.jpg" },
+      { name: "Desire Mood Enhancer FDA_LTO", meta: "JPG · FDA License to Operate", url: "https://desirephilippines.b-cdn.net/Our%20Science/FDA%20LTO.jpg" },
+      { name: "Desire Mood Enhancer FDA_CPR", meta: "JPG · FDA Certificate of Product Registration", url: "https://desirephilippines.b-cdn.net/Our%20Science/FDA%20CPR.jpg" },
     ],
   },
 ];
