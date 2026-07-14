@@ -73,7 +73,7 @@ const certGroups = [
       "Designed to support your long-term health and vitality, Daily Ultimate Longevity is crafted with carefully selected ingredients that are clinically studied for their effectiveness. To ensure this premium product meets our high standards, every batch undergoes thorough third-party testing." as string | null,
     docs: [
       { name: "Desire Mood Enhancer Vitaquest", meta: "PDF · Batch test report", url: "https://desirephilippines.b-cdn.net/Our%20Science/Vitaquest.pdf" },
-      { name: "Desire Mood Enhancer Eurofins", meta: "PDF · Batch test report", url: "https://desirephilippines.b-cdn.net/Our%20Science/Eurofins.pdf" },
+      { name: "Desire Mood Enhancer Eurofins", meta: "PDF · Batch test report", url: "https://desirephilippines.b-cdn.net/Our%20Science/Eurofins_Desire-2025.pdf" },
     ],
   },
   {
