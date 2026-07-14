@@ -148,6 +148,7 @@ function CheckoutPage() {
 
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
   const [landmark, setLandmark] = useState("");
   const [saveInfo, setSaveInfo] = useState(false);
@@ -253,10 +254,13 @@ function CheckoutPage() {
     loadBarangays(c);
   };
 
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+
   const canPlaceOrder =
     items.length > 0 &&
     fullName.trim() !== "" &&
     phone.trim() !== "" &&
+    emailValid &&
     address.trim() !== "" &&
     province !== null &&
     city !== null &&
@@ -323,7 +327,7 @@ function CheckoutPage() {
       const { error } = await supabase.from("orders").insert({
         id: orderId,
         name: fullName.trim(),
-        email: `${cleanPhone}@noemail.desire`,
+        email: email.trim(),
         phone: cleanPhone,
         street_address: address.trim(),
         province_code: province!.id,
@@ -458,6 +462,33 @@ function CheckoutPage() {
                   className="mt-1.5 text-[0.78rem] leading-snug text-muted-foreground"
                 >
                   Please double-check your number — we'll use it to reach you about your order.
+                </p>
+              </div>
+            </div>
+
+            <div className="form-row">
+              <div className="form-field">
+                <label className="form-label" htmlFor="co-email">
+                  Email Address<span className="req">*</span>
+                </label>
+                <input
+                  id="co-email"
+                  className="form-input"
+                  type="email"
+                  inputMode="email"
+                  autoComplete="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="juan@email.com"
+                  required
+                  aria-required
+                  aria-describedby="co-email-hint"
+                />
+                <p
+                  id="co-email-hint"
+                  className="mt-1.5 text-[0.78rem] leading-snug text-muted-foreground"
+                >
+                  We'll send your order confirmation and updates here.
                 </p>
               </div>
             </div>

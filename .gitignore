@@ -38,3 +38,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local documentation (not part of the site)
+DESIRE-Analytics-Documentation.pdf
+analytics-schema.sql
+add-brand-column.sql

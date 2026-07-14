@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { analyticsClient, ADMIN_PASSWORD } from "@/lib/analytics";
+import { analyticsClient, ADMIN_PASSWORD, ANALYTICS_BRAND } from "@/lib/analytics";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
@@ -121,7 +121,12 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
         }
 
         const q = (table: string, tsCol: string) => {
-          let b = c.from(table).select("*").order(tsCol, { ascending: false }).limit(5000);
+          let b = c
+            .from(table)
+            .select("*")
+            .eq("brand", ANALYTICS_BRAND)
+            .order(tsCol, { ascending: false })
+            .limit(5000);
           if (since) b = b.gte(tsCol, since);
           if (until) b = b.lte(tsCol, until);
           return b;

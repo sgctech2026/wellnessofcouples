@@ -2,9 +2,14 @@
 // All tracking runs client-side. Anon inserts allowed via RLS policies (see SQL).
 import { createClient } from "@supabase/supabase-js";
 
-const ANALYTICS_URL = "https://klzlqilizxduweymlfwf.supabase.co";
+const ANALYTICS_URL = "https://zaigkluzridnzefclser.supabase.co";
 const ANALYTICS_ANON =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtsemxxaWxpenhkdXdleW1sZndmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM0OTc2NzQsImV4cCI6MjA5OTA3MzY3NH0.WNRzkMqo0Eez1qIRqJUCXySzQRtBECfFnaME0WYNspE";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InphaWdrbHV6cmlkbnplZmNsc2VyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5OTczMDMsImV4cCI6MjA5OTU3MzMwM30.KviBbsBPEsrP4mbxHwxm3ywm1QyoczSRgIJqLJBb3h0";
+
+// Brand tag — one shared analytics DB serves many brands. Every row is
+// stamped with this so each site's /admin only sees its own data.
+// CHANGE THIS PER WEBSITE (e.g. "desire", "brandx").
+export const ANALYTICS_BRAND = "desire";
 
 // Password for /admin page. Change this to rotate access.
 export const ADMIN_PASSWORD = "SGC12345!";
@@ -48,6 +53,7 @@ export async function trackVisit(path: string) {
   localStorage.setItem(key, String(Date.now()));
   try {
     await c.from("analytics_visits").insert({
+      brand: ANALYTICS_BRAND,
       device_id: getDeviceId(),
       page_path: path,
     });
@@ -70,6 +76,7 @@ export function startEngagementTimer(path: string) {
     if (!c) return;
     try {
       await c.from("analytics_engaged").insert({
+        brand: ANALYTICS_BRAND,
         device_id: getDeviceId(),
         page_path: path,
       });
@@ -96,6 +103,7 @@ export async function trackAddToCart(payload: {
   if (!c) return;
   try {
     await c.from("analytics_cart").insert({
+      brand: ANALYTICS_BRAND,
       device_id: getDeviceId(),
       product: payload.product,
       variant: payload.variant ?? null,
@@ -114,6 +122,7 @@ export async function trackCheckout(orderId: string, total: number) {
   const device_id = getDeviceId();
   try {
     await c.from("analytics_checkouts").insert({
+      brand: ANALYTICS_BRAND,
       device_id,
       order_id: orderId,
       total,
@@ -151,6 +160,7 @@ export function initSectionTracker(path: string) {
     if (!c) return;
     try {
       await c.from("analytics_sections").insert({
+        brand: ANALYTICS_BRAND,
         device_id: getDeviceId(),
         page_path: path,
         section_id: t.name,
