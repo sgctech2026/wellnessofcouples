@@ -347,6 +347,23 @@ function CheckoutPage() {
         console.warn("Supabase order save failed (non-blocking):", error);
       }
 
+      /* ── Capture email into the Email Router (fire-and-forget) ──
+         Public endpoint; must never block or break checkout. */
+      if (emailValid) {
+        fetch(
+          "https://zaigkluzridnzefclser.supabase.co/functions/v1/subscribe?brand=desire-philippines",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: email.trim(),
+              name: fullName.trim(),
+              phone: cleanPhone,
+            }),
+          },
+        ).catch(() => {});
+      }
+
       // Save to sessionStorage for the thank-you page
       const order = {
         orderId,
