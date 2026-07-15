@@ -303,24 +303,59 @@ function CheckoutPage() {
         ? `${firstItem.bundleSize}M + ${firstItem.bundleSize}W`
         : `${firstItem.bundleSize} Bottle${firstItem.bundleSize > 1 ? "s" : ""}`;
 
-      await submitOrder({
-        fullName: fullName.trim(),
-        phone: cleanPhone,
-        streetAddress: address.trim(),
-        provinceId: province!.id,
-        provinceName: province!.name,
-        districtId: city!.id,
-        districtName: city!.name,
-        communeId: barangay!.id,
-        communeName: barangay!.name,
-        landmark: landmark.trim(),
-        paymentMethod: paymentMethod === "cod" ? "cod" : "transfer",
-        price: total,
-        productId: skuEntry.productId,
-        variationId,
-        bundleLabel,
-        websiteOrderId: String(Date.now()),
-      });
+      let pancakeOrderId: string | number | null = null;
+      let pancakeError: unknown = null;
+      try {
+        const pancakeRes = await submitOrder({
+          fullName: fullName.trim(),
+          phone: cleanPhone,
+          streetAddress: address.trim(),
+          provinceId: province!.id,
+          provinceName: province!.name,
+          districtId: city!.id,
+          districtName: city!.name,
+          communeId: barangay!.id,
+          communeName: barangay!.name,
+          landmark: landmark.trim(),
+          paymentMethod: paymentMethod === "cod" ? "cod" : "transfer",
+          price: total,
+          productId: skuEntry.productId,
+          variationId,
+          bundleLabel,
+          websiteOrderId: String(Date.now()),
+        });
+        // The proxy passes Pancake's response through as-is, so accept either
+        // a top-level id or one nested under `data`.
+        pancakeOrderId = pancakeRes?.data?.id ?? pancakeRes?.id ?? null;
+      } catch (err) {
+        // Hold the error: capture the email first (below), then rethrow so the
+        // existing failure handling still runs. We never want to lose the email.
+        pancakeError = err;
+      }
+
+      /* ── Capture email into the Email Router (fire-and-forget) ──
+         Public endpoint; must never block or break checkout. order_id is
+         omitted if Pancake returned none, so the email is never lost. */
+      if (emailValid) {
+        fetch(
+          "https://zaigkluzridnzefclser.supabase.co/functions/v1/subscribe?brand=desire-philippines",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: email.trim(),
+              name: fullName.trim(),
+              phone: cleanPhone,
+              ...(pancakeOrderId != null
+                ? { order_id: String(pancakeOrderId) }
+                : {}),
+              amount: total,
+            }),
+          },
+        ).catch(() => {});
+      }
+
+      if (pancakeError) throw pancakeError;
 
       /* ── Also save to Supabase for internal tracking ── */
       const orderId = crypto.randomUUID();
@@ -345,23 +380,6 @@ function CheckoutPage() {
 
       if (error) {
         console.warn("Supabase order save failed (non-blocking):", error);
-      }
-
-      /* ── Capture email into the Email Router (fire-and-forget) ──
-         Public endpoint; must never block or break checkout. */
-      if (emailValid) {
-        fetch(
-          "https://zaigkluzridnzefclser.supabase.co/functions/v1/subscribe?brand=desire-philippines",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              email: email.trim(),
-              name: fullName.trim(),
-              phone: cleanPhone,
-            }),
-          },
-        ).catch(() => {});
       }
 
       // Save to sessionStorage for the thank-you page
