@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "@tanstack/react-router";
 import { ShoppingCart, X } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetClose } from "@/components/ui/sheet";
+import { useCart } from "@/lib/cartStore";
 
 const LINKS = [
   { href: "/", label: "Home" },
@@ -10,8 +11,6 @@ const LINKS = [
   { href: "/our-science", label: "Our Science" },
   { href: "/faq", label: "FAQ" },
 ];
-
-const CART_COUNT = 2;
 
 function Logo() {
   return (
@@ -31,6 +30,8 @@ function Logo() {
 
 export function ProductNav() {
   const { pathname } = useLocation();
+  const cartItems = useCart();
+  const CART_COUNT = cartItems.reduce((sum, i) => sum + i.qty, 0);
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 

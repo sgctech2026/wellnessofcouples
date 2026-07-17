@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useCart, clearCart } from "@/lib/cartStore";
+import { useCart, clearCart, setCart, setLeadEmail, clearLeadEmail, parseRestoreParam } from "@/lib/cartStore";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -26,6 +26,9 @@ import {
 } from "@/services/pancakeService";
 
 export const Route = createFileRoute("/checkout")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    restore: typeof search.restore === "string" ? search.restore : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Checkout - DESIRE" },
@@ -137,6 +140,21 @@ function LocationCombobox({
 function CheckoutPage() {
   const items = useCart();
   const navigate = useNavigate();
+  const { restore } = Route.useSearch();
+
+  // Restore a cart from an abandoned-cart email link
+  // (?restore=1%20M:1,2%20WM:2). Rebuild it, replace the current cart, then
+  // strip the param. Unknown/out-of-stock SKUs are skipped — never an error.
+  useEffect(() => {
+    if (!restore) return;
+    const restored = parseRestoreParam(restore);
+    if (restored.length > 0) {
+      setCart(restored);
+    }
+    navigate({ to: "/checkout", replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [restore]);
+
   const totalQty = items.reduce((s, i) => s + i.qty, 0);
   const subtotal = items.reduce((s, i) => s + i.unitPrice * i.qty, 0);
   const discount = items.reduce(
@@ -255,6 +273,12 @@ function CheckoutPage() {
   };
 
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+
+  // Remember a valid email so the global cart tracker (in cartStore) can
+  // attribute every later cart change to this shopper.
+  const rememberEmail = () => {
+    if (emailValid) setLeadEmail(email.trim());
+  };
 
   const canPlaceOrder =
     items.length > 0 &&
@@ -412,6 +436,9 @@ function CheckoutPage() {
         console.warn("Unable to save order summary locally:", storageError);
       }
 
+      // Lead journey is done — forget the email first so clearing the cart
+      // below doesn't fire a stray empty-cart capture after the conversion.
+      clearLeadEmail();
       clearCart();
       navigate({ to: "/complete", search: { order_id: orderId } });
     } catch (err: unknown) {
@@ -514,6 +541,7 @@ function CheckoutPage() {
                   autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  onBlur={rememberEmail}
                   placeholder="juan@email.com"
                   required
                   aria-required

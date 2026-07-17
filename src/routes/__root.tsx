@@ -2,6 +2,7 @@ import { Outlet, Link, createRootRoute, HeadContent, Scripts, useRouter } from "
 import { useEffect } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { PageLoader } from "@/components/desire/PageLoader";
+import { EmailCapturePopup } from "@/components/desire/EmailCapturePopup";
 import { META_PIXEL_ID, trackPageView } from "@/lib/meta-pixel";
 
 import appCss from "../styles.css?url";
@@ -209,6 +210,7 @@ function RootComponent() {
       <RouteChangeTracker />
       <PageLoader />
       <Outlet />
+      <EmailCapturePopup />
       <Toaster position="top-center" />
     </>
   );

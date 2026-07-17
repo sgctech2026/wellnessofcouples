@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { ShoppingCart, X } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetClose } from "@/components/ui/sheet";
+import { useCart } from "@/lib/cartStore";
 
 const NAV_LINKS = [
   { label: "Home", to: "/" },
@@ -12,9 +13,9 @@ const NAV_LINKS = [
   { label: "FAQ", to: "/faq" },
 ] as const;
 
-const CART_COUNT = 2;
-
 export function Nav({ lightBg = false }: { lightBg?: boolean } = {}) {
+  const cartItems = useCart();
+  const CART_COUNT = cartItems.reduce((sum, i) => sum + i.qty, 0);
   const { scrollY } = useScroll();
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
