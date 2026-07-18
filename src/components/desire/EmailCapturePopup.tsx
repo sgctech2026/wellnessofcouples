@@ -3,7 +3,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { setLeadEmail } from "@/lib/cartStore";
 
 // ── Config (tweak freely) ─────────────────────────────────────────
-const SHOW_AFTER_MS = 4000; // delay before the popup appears
+const SHOW_AFTER_MS = 8000; // delay before the popup appears
 const SEEN_KEY = "desire_emailpopup_seen"; // localStorage flag, shows once
 const SHOP_PATH = "/products"; // where to send them after signup
 
