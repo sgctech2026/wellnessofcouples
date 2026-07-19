@@ -10319,8 +10319,14 @@
   position: fixed;
   inset: 0;
   z-index: 1200;
-  display: block;
-  background: var(--cream, #fbf7f0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  /* Dark + blurred backdrop over the site behind the popup */
+  background: rgba(8, 4, 4, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   animation: ecp-fade 0.25s ease;
 }
 @keyframes ecp-fade { from { opacity: 0; } to { opacity: 1; } }
@@ -10330,14 +10336,20 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  width: 100vw;
-  height: 100vh;
-  height: 100dvh;
+  width: min(940px, 100%);
+  height: min(560px, 88vh);
+  border-radius: 18px;
   background-color: #0d0505;
   background-image: var(--ecp-bg-desktop);
   background-size: cover;
   background-position: left center;
   overflow: hidden;
+  box-shadow: 0 40px 110px rgba(0, 0, 0, 0.7), 0 12px 36px rgba(0, 0, 0, 0.5);
+  animation: ecp-pop 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+@keyframes ecp-pop {
+  from { transform: translateY(14px) scale(0.97); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
 }
 /* Darken the right side so overlaid text stays readable over the photo */
 .ecp-card::after {
@@ -10376,14 +10388,14 @@
 .ecp-body {
   position: relative;
   z-index: 1; /* above the .ecp-card::after gradient */
-  padding: 40px 6%;
-  margin-right: 8%;
+  padding: 32px 34px;
+  margin-right: 3%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   overflow-y: auto;
-  width: 46%;
-  max-width: 560px;
+  width: 50%;
+  max-width: 420px;
   max-height: 100%;
   color: #fff;
 }
@@ -10398,10 +10410,10 @@
 .ecp-headline {
   font-family: var(--font-display, "Montserrat", sans-serif);
   font-weight: 800;
-  font-size: 2.4rem;
+  font-size: 2rem;
   line-height: 1.08;
   color: #fff;
-  margin: 0 0 16px;
+  margin: 0 0 14px;
   text-shadow: 0 2px 18px rgba(0, 0, 0, 0.5);
 }
 .ecp-headline em { color: var(--red, #db2626); font-style: normal; }
@@ -10480,7 +10492,12 @@
 
 /* Mobile: portrait photo, text/form overlaid at the bottom */
 @media (max-width: 640px) {
+  .ecp-overlay { padding: 14px; }
   .ecp-card {
+    /* Rounded centred card on phones, a touch shorter than full height */
+    width: 100%;
+    height: 78vh;
+    height: 78dvh;
     align-items: flex-end;
     justify-content: center;
     /* Use the dedicated portrait promo image on mobile */
