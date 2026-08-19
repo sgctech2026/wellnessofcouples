@@ -65,14 +65,14 @@ const PRODUCT_IMAGES_COUPLE = [
 ];
 
 const BUNDLES_HIM = [
-  { id: 1, name: "1 Bottle", tierLabel: "Starter", tierSub: "1 bottle", original: 1798, price: 899, supply: "30-day supply", perDay: 30, badge: null as string | null, isPopular: false },
-  { id: 2, name: "2 Bottles", tierLabel: "Duo Pack", tierSub: "+3 E-Books", original: 2499, price: 1598, supply: "60-day supply", perDay: 27, badge: "Save 12%", isPopular: false },
-  { id: 3, name: "3 Bottles", tierLabel: "Family Pack", tierSub: "+6 Freebies", original: 4599, price: 2097, supply: "90-day supply", perDay: 23, badge: null, isPopular: true },
+  { id: 1, name: "1 Bottle", tierLabel: "1 Bottle", tierSub: "30-day supply", original: 1798, price: 899, supply: "30-day supply", perDay: 30, badge: null as string | null, isPopular: false },
+  { id: 2, name: "2 Bottles", tierLabel: "2 Bottles", tierSub: "+3 E-Books", original: 2499, price: 1598, supply: "60-day supply", perDay: 27, badge: "Save 12%", isPopular: false },
+  { id: 3, name: "3 Bottles", tierLabel: "3 Bottles", tierSub: "+6 Freebies", original: 4599, price: 2097, supply: "90-day supply", perDay: 23, badge: null, isPopular: true },
 ];
 
 const BUNDLES_COUPLE = [
-  { id: 1, name: "1 Bottle Men + 1 Bottle Women", tierLabel: "Starter Set", tierSub: "1 set", original: 3596, price: 1598, supply: "30-day supply", perDay: 53, badge: null as string | null, isPopular: false },
-  { id: 2, name: "2 Bottles Men + 2 Bottles Women", tierLabel: "Couple Pack", tierSub: "+6 Freebies", original: 7196, price: 2796, supply: "60-day supply", perDay: 47, badge: "Save 22%", isPopular: true },
+  { id: 1, name: "1 Bottle Men + 1 Bottle Women", tierLabel: "1 Set", tierSub: "30-day supply", original: 3596, price: 1598, supply: "30-day supply", perDay: 53, badge: null as string | null, isPopular: false },
+  { id: 2, name: "2 Bottles Men + 2 Bottles Women", tierLabel: "2 Sets", tierSub: "+6 Freebies", original: 7196, price: 2796, supply: "60-day supply", perDay: 47, badge: "Save 22%", isPopular: true },
 ];
 
 // Freebies that progressively unlock as the customer upgrades bundles.
