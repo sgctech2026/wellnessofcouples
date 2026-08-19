@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { FadeUp } from "./FadeUp";
 import { getOptimizedImageUrl } from "@/utils/imageUrl";
@@ -69,9 +69,60 @@ function TimelineItem({ idx, ing, isAlt }: { idx: number; ing: Ingredient; isAlt
   );
 }
 
+/** The gender toggle pill. Reused by the header (static) and the mobile
+ *  floating (sticky) version — same markup, different wrapper class. */
+function FormulaToggle({
+  isMen,
+  onSelect,
+  className = "",
+  innerRef,
+}: {
+  isMen: boolean;
+  onSelect: (men: boolean) => void;
+  className?: string;
+  innerRef?: React.Ref<HTMLDivElement>;
+}) {
+  return (
+    <div
+      ref={innerRef}
+      className={`science-toggle ${className}`}
+      role="tablist"
+      aria-label="Choose formula"
+    >
+      <span
+        className="science-toggle-pill"
+        aria-hidden
+        style={{ transform: isMen ? "translateX(0)" : "translateX(100%)" }}
+      />
+      <button
+        type="button"
+        role="tab"
+        aria-selected={isMen}
+        className={`science-toggle-btn ${isMen ? "active" : ""}`}
+        onClick={() => onSelect(true)}
+      >
+        For Him
+      </button>
+      <button
+        type="button"
+        role="tab"
+        aria-selected={!isMen}
+        className={`science-toggle-btn ${!isMen ? "active" : ""}`}
+        onClick={() => onSelect(false)}
+      >
+        For Her
+      </button>
+    </div>
+  );
+}
+
 export function Ingredients() {
   const [isMen, setIsMen] = useState(true);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [showFloating, setShowFloating] = useState(false);
+
+  const sectionRef = useRef<HTMLElement>(null);
+  const topToggleRef = useRef<HTMLDivElement>(null);
 
   const handleToggle = (men: boolean) => {
     if (men === isMen || isAnimating) return;
@@ -82,12 +133,54 @@ export function Ingredients() {
     }, 300);
   };
 
+  // Floating toggle also scrolls back to the top of the section.
+  const selectFromFloating = (men: boolean) => {
+    handleToggle(men);
+    sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  // Show the floating toggle (desktop + mobile) only while the reader is
+  // inside the section AND the header toggle has scrolled out of view.
+  // rAF-throttled to avoid layout thrashing.
+  useEffect(() => {
+    let raf = 0;
+
+    const update = () => {
+      raf = 0;
+      const section = sectionRef.current;
+      const topToggle = topToggleRef.current;
+      if (!section || !topToggle) {
+        setShowFloating(false);
+        return;
+      }
+      const sectionRect = section.getBoundingClientRect();
+      const toggleRect = topToggle.getBoundingClientRect();
+      const vh = window.innerHeight;
+      // Top toggle off-screen (above), and the section still runs past the
+      // bottom of the viewport (we haven't scrolled out of the section).
+      setShowFloating(toggleRect.bottom < 72 && sectionRect.bottom > vh);
+    };
+
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
+
   const current = isMen ? INGREDIENTS.men : INGREDIENTS.women;
 
   return (
     <>
       <div className="science-glow-divider" aria-hidden />
-      <section className="science-section">
+      <section className="science-section" ref={sectionRef}>
         <div className="science-bg" aria-hidden />
         <div className="science-inner">
           <div className="science-header">
@@ -109,31 +202,11 @@ export function Ingredients() {
             </FadeUp>
 
             <FadeUp delay={0.3}>
-              <div className="science-toggle" role="tablist" aria-label="Choose formula">
-                <span
-                  className="science-toggle-pill"
-                  aria-hidden
-                  style={{ transform: isMen ? "translateX(0)" : "translateX(100%)" }}
-                />
-                <button
-                  type="button"
-                  role="tab"
-                  aria-selected={isMen}
-                  className={`science-toggle-btn ${isMen ? "active" : ""}`}
-                  onClick={() => handleToggle(true)}
-                >
-                  For Him
-                </button>
-                <button
-                  type="button"
-                  role="tab"
-                  aria-selected={!isMen}
-                  className={`science-toggle-btn ${!isMen ? "active" : ""}`}
-                  onClick={() => handleToggle(false)}
-                >
-                  For Her
-                </button>
-              </div>
+              <FormulaToggle
+                isMen={isMen}
+                onSelect={handleToggle}
+                innerRef={topToggleRef}
+              />
             </FadeUp>
           </div>
 
@@ -183,6 +256,18 @@ export function Ingredients() {
           </div>
         </div>
       </section>
+
+      {/* Mobile-only floating toggle — appears when the header toggle is
+          scrolled out of view while the reader is still in the section. */}
+      <div
+        className={`science-toggle-float-wrap ${showFloating ? "is-visible" : ""}`}
+      >
+        <FormulaToggle
+          isMen={isMen}
+          onSelect={selectFromFloating}
+          className="science-toggle-float"
+        />
+      </div>
     </>
   );
 }

@@ -1576,9 +1576,64 @@
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100px;
-  transition: color 0.4s;
+  transition: color 0.4s, transform 0.15s ease;
+  white-space: nowrap;
 }
 .science-toggle-btn.active { color: var(--white); }
+
+/* ── Floating / sticky toggle (desktop + mobile) ─────────────────
+   Same pill as the header toggle, docked at the bottom of the screen.
+   Hidden by default; JS toggles .is-visible while in-section. */
+.science-toggle-float-wrap {
+  position: fixed;
+  left: 50%;
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  transform: translate(-50%, 16px);
+  z-index: 90;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.science-toggle-float-wrap.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+  pointer-events: auto;
+}
+@media (max-width: 768px) {
+  .science-toggle-float-wrap {
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* The pill itself when floating: deeper shadow, red glow, live "breathe". */
+.science-toggle-float {
+  box-shadow: 0 12px 30px rgba(74, 12, 12, 0.28),
+    0 0 0 1px rgba(219, 38, 38, 0.35);
+  animation: science-float-breathe 3.2s ease-in-out infinite;
+}
+.science-toggle-float .science-toggle-btn:active {
+  transform: scale(0.97); /* press-down on tap */
+}
+.science-toggle-float .science-toggle-pill {
+  box-shadow: 0 8px 20px rgba(219, 38, 38, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25); /* inner highlight */
+}
+@keyframes science-float-breathe {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 12px 30px rgba(74, 12, 12, 0.28),
+      0 0 0 1px rgba(219, 38, 38, 0.35);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 16px 38px rgba(74, 12, 12, 0.34),
+      0 0 0 1px rgba(219, 38, 38, 0.55),
+      0 0 18px rgba(219, 38, 38, 0.25);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .science-toggle-float { animation: none; }
+}
 
 /* Timeline */
 .science-timeline {
