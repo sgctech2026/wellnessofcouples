@@ -66,10 +66,10 @@ export function Footer() {
             </p>
             <p className="footer-contact-line">
               <a
-                href="mailto:desirephilippines@gmail.com"
+                href="mailto:commitment.desire@gmail.com"
                 className="contact-link"
               >
-                desirephilippines@gmail.com
+                commitment.desire@gmail.com
               </a>
             </p>
             <p className="footer-contact-line">Desire Philippines</p>
