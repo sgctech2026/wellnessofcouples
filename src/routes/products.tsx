@@ -1093,9 +1093,6 @@ export function ProductDesireMen({ initialVariant = "him" }: { initialVariant?: 
                   <span aria-hidden>💳</span> COD Available
                 </span>
                 <span className="pdp-trust-badge">
-                  <span aria-hidden>↩</span> 60-Day Money-Back
-                </span>
-                <span className="pdp-trust-badge">
                   <span aria-hidden>🧬</span> Doctor-Formulated
                 </span>
               </div>
