@@ -1516,10 +1516,6 @@ export function ProductDesireMen({ initialVariant = "him" }: { initialVariant?: 
               </div>
               <div className="cta-trust">
                 <div className="cta-trust-item">
-                  <div className="cta-trust-icon"><Shield size={18} aria-hidden /></div>
-                  <div className="cta-trust-label">Money<br />Back</div>
-                </div>
-                <div className="cta-trust-item">
                   <div className="cta-trust-icon"><Package size={18} aria-hidden /></div>
                   <div className="cta-trust-label">Free<br />Shipping</div>
                 </div>
