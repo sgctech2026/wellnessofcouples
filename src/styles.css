@@ -5833,9 +5833,10 @@
   border-color: var(--red);
 }
 .cta-trust {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 3rem;
   padding-top: 2.5rem;
   border-top: 1px solid var(--line);
   max-width: 700px;
@@ -5881,7 +5882,7 @@
   .cta-flex-layout > div:last-child { display: none !important; }
   .cta-flex-layout { flex-direction: column !important; }
   .cta-row { flex-direction: column; gap: 1rem; }
-  .cta-trust { grid-template-columns: 1fr 1fr; gap: 1.5rem 1rem; }
+  .cta-trust { gap: 1.5rem 2rem; }
   .cta-headline { font-size: 2rem; }
 }
 @media (max-width: 480px) {
