@@ -60,8 +60,8 @@ export function Footer() {
               12th Floor Paragon Plaza Building
             </p>
             <p className="footer-contact-line">
-              <a href="tel:09205689440" className="contact-link">
-                0920-568-9440
+              <a href="tel:09566222401" className="contact-link">
+                0956-622-2401
               </a>
             </p>
             <p className="footer-contact-line">
