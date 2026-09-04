@@ -85,7 +85,6 @@ export function Footer() {
           <div className="footer-legal">
             <a href="/privacy">Privacy policy</a>
             <a href="/terms-of-sale">Terms of sale</a>
-            <a href="/refund-policy">Refund policy</a>
           </div>
         </div>
       </div>

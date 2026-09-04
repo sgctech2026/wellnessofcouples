@@ -253,7 +253,7 @@ const CB_FAQS = [
   { question: "Isn't this just another supplement?", answer: "No. Supplements are generic. DESIRE is <strong>specifically engineered for couples who've lost their intimacy</strong>. Every ingredient was chosen for a specific reason: to restore hormonal balance, boost mood, increase energy, and reignite desire." },
   { question: "What about side effects?", answer: "None that we've documented. It's all natural ingredients. Some people report feeling <strong>more energized</strong> (which is the point). Some report <strong>better sleep</strong> (also the point). <em>If you have a specific health condition, check with your doctor.</em>" },
   { question: "Do both partners need to take it?", answer: "It works better when both partners take it - that's why we have <strong>For Her and For Him formulations</strong>. But you can absolutely start solo and bring your partner in later." },
-  { question: "What if it doesn't work for me?", answer: "You get every peso back. <strong>30-day money-back guarantee.</strong> No questions. No hassle. No judgment. Try it for a full 30 days. If you don't feel the difference, we refund you completely." },
+  { question: "How long before I feel a difference?", answer: "Give it a real shot. <strong>Take DESIRE daily for a full 30 days</strong> and follow the guide. Most couples start noticing small shifts, more energy, closeness, and drive, within the first few weeks. It was built to actually work when you show up for it consistently." },
 ];
 
 const CB_COUPLE_VIDEOS = [
@@ -492,9 +492,9 @@ function ClinicalProofBox({ variant = "him" }: { variant?: ProductVariant }) {
             <div className="cb-guarantee">
               <div className="cb-guarantee-icon" aria-hidden="true">✓</div>
               <div className="cb-guarantee-content">
-                <div className="cb-guarantee-title">30-Day Money-Back Guarantee</div>
+                <div className="cb-guarantee-title">Give It a Full 30 Days</div>
                 <div className="cb-guarantee-desc">
-                  Don't feel a difference? <em>We refund every peso.</em> No questions asked.
+                  Take DESIRE daily and follow the guide. <em>It's built to actually work</em> when you show up for it consistently.
                 </div>
               </div>
             </div>
@@ -579,9 +579,9 @@ function ClinicalProofBox({ variant = "him" }: { variant?: ProductVariant }) {
             <div className="cb-guarantee">
               <div className="cb-guarantee-icon" aria-hidden="true">✓</div>
               <div className="cb-guarantee-content">
-                <div className="cb-guarantee-title">30-Day Money-Back Guarantee</div>
+                <div className="cb-guarantee-title">Give It a Full 30 Days</div>
                 <div className="cb-guarantee-desc">
-                  Don't feel a difference? <em>We refund every peso.</em> No questions asked.
+                  Take DESIRE daily and follow the guide. <em>It's built to actually work</em> when you show up for it consistently.
                 </div>
               </div>
             </div>
@@ -1113,7 +1113,7 @@ export function ProductDesireMen({ initialVariant = "him" }: { initialVariant?: 
                       { q: "How long before I see results?", a: "Most men feel a noticeable boost in drive, energy, and mood within 2 weeks of daily use. For full results, stamina, deeper connection, and consistent confidence, give it the full 30-day challenge." },
                       { q: "Is Desire for Men safe to take daily?", a: "Yes. Desire is FDA-approved, made from clinically-studied natural ingredients, and formulated for daily use. No prescription needed, no harsh stimulants, and no crash." },
                       { q: "Will my partner notice the difference?", a: "Almost always, yes. 87% of partners in our 30-day study reported feeling more physically and emotionally connected. That's the whole point: it's not just for you, it's for both of you." },
-                      { q: "What if it doesn't work for me?", a: "You're covered by our 30-Day Money-Back Guarantee. If you don't feel the difference, send it back, even if the bottle is empty, and we'll refund you. No questions asked." },
+                      { q: "How long before I feel a difference?", a: "Give it a real shot. Take DESIRE daily for a full 30 days and follow the guide. Most couples start noticing small shifts, more energy, closeness, and drive, within the first few weeks. It was built to actually work when you show up for it consistently." },
                       { q: "How discreet is the shipping?", a: "Very. Orders ship in plain, unbranded packaging with no mention of Desire or its contents on the outside. Only you'll know what's inside." },
                       { q: "Can I take Desire with other supplements or medications?", a: "Desire is made from natural ingredients and is generally safe to combine with most supplements. If you're on prescription medication or have a medical condition, we recommend checking with your doctor first." },
                       { q: "When is the best time of day to take it?", a: "Most men take Desire in the morning with breakfast for all-day drive and focus. You can also take it 30–60 minutes before intimacy for an extra boost when you need it most." },
@@ -1501,14 +1501,14 @@ export function ProductDesireMen({ initialVariant = "him" }: { initialVariant?: 
             <div className="cta-wrap" style={{ flex: 1 }}>
               <div className="cta-badge">
                 <span className="dot" aria-hidden />
-                30-Day Guarantee
+                Real Results
               </div>
               <h2 className="cta-headline">
                 Try it for 30 days.<br />
                 <em>You'll feel the difference.</em>
               </h2>
               <p className="cta-sub">
-                Love it or <em>get your money back.</em> No questions asked, no return shipping. Just real intimacy back.
+                Take it daily, follow the guide, and give your body the full 30 days. Just real intimacy back.
               </p>
               <div className="cta-row">
                 <Link to="/products" preload="intent" className="cta-btn-primary">Try Desire Today</Link>

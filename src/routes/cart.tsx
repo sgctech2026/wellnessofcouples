@@ -196,10 +196,6 @@ function CartPage() {
 
         <div className="cart-trust-strip">
           <div className="trust-item">
-            <span className="trust-icon">🛡</span>
-            <span className="trust-text">90-Day Money Back</span>
-          </div>
-          <div className="trust-item">
             <span className="trust-icon">🔒</span>
             <span className="trust-text">Secure SSL Checkout</span>
           </div>

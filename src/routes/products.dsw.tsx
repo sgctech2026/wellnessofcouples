@@ -13,7 +13,7 @@ export const Route = createFileRoute("/products/dsw")({
       { property: "og:title", content: "Desire for Women, Daily Gummies" },
       {
         property: "og:description",
-        content: "Backed by research. Loved by Filipino women. 30-day money-back guarantee.",
+        content: "Backed by research. Loved by Filipino women. Free, discreet shipping.",
       },
     ],
   }),

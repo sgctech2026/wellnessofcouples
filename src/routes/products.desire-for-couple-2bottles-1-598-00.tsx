@@ -15,7 +15,7 @@ export const Route = createFileRoute(
       { property: "og:title", content: "Desire for Couple Bundle" },
       {
         property: "og:description",
-        content: "Couple bundle: ₱1,598. Backed by research. 30-day money-back guarantee.",
+        content: "Couple bundle: ₱1,598. Backed by research. Free, discreet shipping.",
       },
     ],
   }),

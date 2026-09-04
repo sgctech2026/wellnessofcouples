@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 const ITEMS = [
   "FREE SHIPPING ON ORDERS ₱2,000+",
-  "30-DAY MONEY BACK GUARANTEE",
+  "DISCREET PACKAGING",
   "FDA APPROVED · GMP CERTIFIED",
   "JOIN 3,500+ COUPLES",
 ];

@@ -779,9 +779,9 @@ function CheckoutPage() {
           </div>
 
           <div className="summary-trust">
-            <div className="summary-trust-item">30-Day Money-Back Guarantee</div>
             <div className="summary-trust-item">Discreet, unmarked packaging</div>
             <div className="summary-trust-item">SSL secured payment</div>
+            <div className="summary-trust-item">Free &amp; fast shipping</div>
           </div>
         </aside>
       </div>

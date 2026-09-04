@@ -47,9 +47,9 @@ const FAQS = [
   },
   {
     number: "08",
-    question: "What if it doesn't work for me?",
+    question: "How long before I feel a difference?",
     answer:
-      "You get every peso back. <strong>30-day money-back guarantee.</strong> No questions. No hassle. No judgment. Try it for a full 30 days, give it a real shot. If you don't feel the difference, we refund you completely. <em>That's our promise.</em>",
+      "Give it a real shot. <strong>Take DESIRE daily for a full 30 days</strong> and follow the guide. Most couples start noticing small shifts, more energy, closeness, and drive, within the first few weeks. It was built to actually work when you show up for it consistently.",
   },
 ];
 

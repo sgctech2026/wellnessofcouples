@@ -13,7 +13,7 @@ export const Route = createFileRoute("/products/desire-for-men")({
       { property: "og:title", content: "Desire for Men, Daily Gummies" },
       {
         property: "og:description",
-        content: "Backed by research. Validated by real couples. 30-day money-back guarantee.",
+        content: "Backed by research. Validated by real couples. Free, discreet shipping.",
       },
     ],
   }),
