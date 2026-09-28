@@ -127,6 +127,9 @@ export async function submitOrder(orderData: OrderPayload) {
     .join(", ");
 
   const SHOP_ID = "1635271122";
+  // Two Desire websites share this Pancake shop; tag orders so staff can tell
+  // wellnessforcouples.shop orders apart from desirephilippines.com ones.
+  const SOURCE_LABEL = "Source: wellnessforcouples.shop";
 
   const body = {
     shop_id: Number(SHOP_ID),
@@ -156,12 +159,14 @@ export async function submitOrder(orderData: OrderPayload) {
       ? `Landmark: ${orderData.landmark}`
       : "",
     note_internal: [
+      SOURCE_LABEL,
       `Payment: ${orderData.paymentMethod === "cod" ? "Cash on Delivery (COD)" : "Bank Transfer / GCash"}`,
       `Amount: ₱${orderData.price.toLocaleString()}`,
       `Website Order ID: ${orderData.websiteOrderId ?? "N/A"}`,
       `Product: ${orderData.productId} - ${orderData.bundleLabel}`,
     ].join("\n"),
     note: [
+      SOURCE_LABEL,
       orderData.landmark ?? "",
       `Payment: ${orderData.paymentMethod === "cod" ? "Cash on Delivery (COD)" : "Bank Transfer / GCash"}`,
       `Amount: ₱${orderData.price.toLocaleString()}`,
