@@ -1,5 +1,5 @@
 // Meta Pixel client helper
-export const META_PIXEL_ID = "26192331687073676";
+export const META_PIXEL_ID = "1403921721710503";
 
 declare global {
   interface Window {

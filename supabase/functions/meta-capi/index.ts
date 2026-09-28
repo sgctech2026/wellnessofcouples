@@ -5,7 +5,7 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const PIXEL_ID = "26192331687073676";
+const PIXEL_ID = "1403921721710503";
 
 async function sha256Hex(input: string): Promise<string> {
   const buf = new TextEncoder().encode(input.trim().toLowerCase());

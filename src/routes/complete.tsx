@@ -4,8 +4,6 @@ import { z } from "zod";
 import { ProductNav } from "@/components/desire/ProductNav";
 import { Footer } from "@/components/desire/Footer";
 import type { CartItem } from "@/lib/cartStore";
-import { trackEvent } from "@/lib/meta-pixel";
-import { supabase } from "@/integrations/supabase/client";
 
 type OrderCustomer = {
   firstName: string;
@@ -119,11 +117,21 @@ function CompletePage() {
     }
   }, [order_id]);
 
-  // Meta Pixel Purchase + Conversions API (deduped via event_id). Skips demo order.
+  // Purchase is sent server-side via Meta Conversions API only (the browser Pixel
+  // handles PageView). Skips demo order.
   useEffect(() => {
     if (!order || order.orderId === "demo-preview") return;
     if (trackedRef.current === order.orderId) return;
     trackedRef.current = order.orderId;
+
+    // Don't resend the Purchase if this page is reloaded or revisited.
+    const sentKey = `desire_capi_sent_${order.orderId}`;
+    try {
+      if (sessionStorage.getItem(sentKey)) return;
+      sessionStorage.setItem(sentKey, "1");
+    } catch {
+      /* storage unavailable: event_id still lets Meta dedupe */
+    }
 
     // Analytics checkout tracking
     import("@/lib/analytics")
@@ -143,37 +151,30 @@ function CompletePage() {
       return m ? decodeURIComponent(m[1]) : undefined;
     };
 
-    trackEvent(
-      "Purchase",
-      {
+    fetch("/api/meta-capi", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      keepalive: true,
+      body: JSON.stringify({
+        eventId,
+        eventSourceUrl: typeof window !== "undefined" ? window.location.href : undefined,
         value: order.total,
         currency: "PHP",
         contents,
-        content_type: "product",
-        num_items: order.items.reduce((s, i) => s + i.qty, 0),
-      },
-      { eventID: eventId }
-    );
-
-    supabase.functions
-      .invoke("meta-capi", {
-        body: {
-          eventId,
-          eventSourceUrl: typeof window !== "undefined" ? window.location.href : undefined,
-          value: order.total,
-          currency: "PHP",
-          contents,
-          user: {
-            email: order.customer.email,
-            phone: order.customer.phone,
-            firstName: order.customer.firstName,
-            lastName: order.customer.lastName,
-            city: order.customer.city,
-            country: order.customer.country,
-            fbp: getCookie("_fbp"),
-            fbc: getCookie("_fbc"),
-          },
+        user: {
+          email: order.customer.email,
+          phone: order.customer.phone,
+          firstName: order.customer.firstName,
+          lastName: order.customer.lastName,
+          city: order.customer.city,
+          country: order.customer.country,
+          fbp: getCookie("_fbp"),
+          fbc: getCookie("_fbc"),
         },
+      }),
+    })
+      .then(async (res) => {
+        if (!res.ok) console.error("CAPI purchase failed", res.status, await res.text());
       })
       .catch((e: unknown) => console.error("CAPI purchase failed", e));
   }, [order]);

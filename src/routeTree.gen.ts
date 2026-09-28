@@ -24,6 +24,7 @@ import { Route as ProductsIndexRouteImport } from './routes/products.index'
 import { Route as ProductsDswRouteImport } from './routes/products.dsw'
 import { Route as ProductsDesireForMenRouteImport } from './routes/products.desire-for-men'
 import { Route as ProductsDesireForCouple2bottles159800RouteImport } from './routes/products.desire-for-couple-2bottles-1-598-00'
+import { Route as ApiMetaCapiRouteImport } from './routes/api/meta-capi'
 import { Route as ApiDownloadRouteImport } from './routes/api/download'
 
 const ProductsRoute = ProductsRouteImport.update({
@@ -102,6 +103,11 @@ const ProductsDesireForCouple2bottles159800Route =
     path: '/desire-for-couple-2bottles-1-598-00',
     getParentRoute: () => ProductsRoute,
   } as any)
+const ApiMetaCapiRoute = ApiMetaCapiRouteImport.update({
+  id: '/api/meta-capi',
+  path: '/api/meta-capi',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiDownloadRoute = ApiDownloadRouteImport.update({
   id: '/api/download',
   path: '/api/download',
@@ -121,6 +127,7 @@ export interface FileRoutesByFullPath {
   '/our-story': typeof OurStoryRoute
   '/products': typeof ProductsRouteWithChildren
   '/api/download': typeof ApiDownloadRoute
+  '/api/meta-capi': typeof ApiMetaCapiRoute
   '/products/desire-for-couple-2bottles-1-598-00': typeof ProductsDesireForCouple2bottles159800Route
   '/products/desire-for-men': typeof ProductsDesireForMenRoute
   '/products/dsw': typeof ProductsDswRoute
@@ -138,6 +145,7 @@ export interface FileRoutesByTo {
   '/our-science': typeof OurScienceRoute
   '/our-story': typeof OurStoryRoute
   '/api/download': typeof ApiDownloadRoute
+  '/api/meta-capi': typeof ApiMetaCapiRoute
   '/products/desire-for-couple-2bottles-1-598-00': typeof ProductsDesireForCouple2bottles159800Route
   '/products/desire-for-men': typeof ProductsDesireForMenRoute
   '/products/dsw': typeof ProductsDswRoute
@@ -157,6 +165,7 @@ export interface FileRoutesById {
   '/our-story': typeof OurStoryRoute
   '/products': typeof ProductsRouteWithChildren
   '/api/download': typeof ApiDownloadRoute
+  '/api/meta-capi': typeof ApiMetaCapiRoute
   '/products/desire-for-couple-2bottles-1-598-00': typeof ProductsDesireForCouple2bottles159800Route
   '/products/desire-for-men': typeof ProductsDesireForMenRoute
   '/products/dsw': typeof ProductsDswRoute
@@ -177,6 +186,7 @@ export interface FileRouteTypes {
     | '/our-story'
     | '/products'
     | '/api/download'
+    | '/api/meta-capi'
     | '/products/desire-for-couple-2bottles-1-598-00'
     | '/products/desire-for-men'
     | '/products/dsw'
@@ -194,6 +204,7 @@ export interface FileRouteTypes {
     | '/our-science'
     | '/our-story'
     | '/api/download'
+    | '/api/meta-capi'
     | '/products/desire-for-couple-2bottles-1-598-00'
     | '/products/desire-for-men'
     | '/products/dsw'
@@ -212,6 +223,7 @@ export interface FileRouteTypes {
     | '/our-story'
     | '/products'
     | '/api/download'
+    | '/api/meta-capi'
     | '/products/desire-for-couple-2bottles-1-598-00'
     | '/products/desire-for-men'
     | '/products/dsw'
@@ -231,6 +243,7 @@ export interface RootRouteChildren {
   OurStoryRoute: typeof OurStoryRoute
   ProductsRoute: typeof ProductsRouteWithChildren
   ApiDownloadRoute: typeof ApiDownloadRoute
+  ApiMetaCapiRoute: typeof ApiMetaCapiRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -340,6 +353,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsDesireForCouple2bottles159800RouteImport
       parentRoute: typeof ProductsRoute
     }
+    '/api/meta-capi': {
+      id: '/api/meta-capi'
+      path: '/api/meta-capi'
+      fullPath: '/api/meta-capi'
+      preLoaderRoute: typeof ApiMetaCapiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/download': {
       id: '/api/download'
       path: '/api/download'
@@ -382,6 +402,7 @@ const rootRouteChildren: RootRouteChildren = {
   OurStoryRoute: OurStoryRoute,
   ProductsRoute: ProductsRouteWithChildren,
   ApiDownloadRoute: ApiDownloadRoute,
+  ApiMetaCapiRoute: ApiMetaCapiRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
