@@ -158,16 +158,11 @@ export async function submitOrder(orderData: OrderPayload) {
     note_print: orderData.landmark
       ? `Landmark: ${orderData.landmark}`
       : "",
-    note_internal: [
-      SOURCE_LABEL,
-      `Payment: ${orderData.paymentMethod === "cod" ? "Cash on Delivery (COD)" : "Bank Transfer / GCash"}`,
-      `Amount: ₱${orderData.price.toLocaleString()}`,
-      `Website Order ID: ${orderData.websiteOrderId ?? "N/A"}`,
-      `Product: ${orderData.productId} - ${orderData.bundleLabel}`,
-    ].join("\n"),
+    // Pancake shows `note` and `note_internal` together in the internal (Nội bộ)
+    // box, so send only `note` to avoid a duplicated block. Landmark is already
+    // in note_print ("Để in").
     note: [
       SOURCE_LABEL,
-      orderData.landmark ?? "",
       `Payment: ${orderData.paymentMethod === "cod" ? "Cash on Delivery (COD)" : "Bank Transfer / GCash"}`,
       `Amount: ₱${orderData.price.toLocaleString()}`,
       `Website Order ID: ${orderData.websiteOrderId ?? "N/A"}`,
